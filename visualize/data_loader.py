@@ -10,12 +10,30 @@ class PolyGen(Dataset):
         self.name = []
         if isinstance(center, int):
             center = [center]
-        for c in center:
-            files = os.listdir(os.path.join(root, 'data_C'+str(c), 'images_C'+str(c)))
-            for f in files:
-                self.data.append(os.path.join(os.path.join(root, 'data_C'+str(c), 'images_C'+str(c), f)))
-                self.label.append(os.path.join(os.path.join(root, 'data_C'+str(c), 'masks_C'+str(c), f.replace('.jpg', '_mask.jpg'))))
-                self.name.append(f)
+        
+        # Check if this is the new format with positive/negative folders
+        if os.path.exists(os.path.join(root, 'positive')):
+            # New format: positive/images and positive/masks
+            categories = ['positive', 'negative'] if os.path.exists(os.path.join(root, 'negative')) else ['positive']
+            for cat in categories:
+                images_path = os.path.join(root, cat, 'images')
+                masks_path = os.path.join(root, cat, 'masks')
+                if os.path.exists(images_path):
+                    files = os.listdir(images_path)
+                    for f in files:
+                        if f.endswith(('.jpg', '.png', '.jpeg')):
+                            self.data.append(os.path.join(images_path, f))
+                            # Mask files have the same name as images in this dataset
+                            self.label.append(os.path.join(masks_path, f))
+                            self.name.append(f)
+        else:
+            # Original format: data_C*/images_C* and data_C*/masks_C*
+            for c in center:
+                files = os.listdir(os.path.join(root, 'data_C'+str(c), 'images_C'+str(c)))
+                for f in files:
+                    self.data.append(os.path.join(os.path.join(root, 'data_C'+str(c), 'images_C'+str(c), f)))
+                    self.label.append(os.path.join(os.path.join(root, 'data_C'+str(c), 'masks_C'+str(c), f.replace('.jpg', '_mask.jpg'))))
+                    self.name.append(f)
         self.transform = transform
         self.show_name = show_name
         

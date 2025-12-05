@@ -2,7 +2,7 @@
 """
 Created on Thu Sep 12 17:02:25 2024
 
-@author: pky0507
+@author: alyadham
 """
 
 import torch

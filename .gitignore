@@ -1,0 +1,12 @@
+# Ignore dataset folder
+visualize/dataset/
+dataset/
+# Ignore output images
+visualize/output/
+# Ignore Python cache and environment files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.env
+venv/
