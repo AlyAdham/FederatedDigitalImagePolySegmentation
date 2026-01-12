@@ -58,3 +58,6 @@ saved_models/
 predictions/
 visualize_output/
 synthetic_vis/
+
+# Dataset
+Kvasir-SEG/
